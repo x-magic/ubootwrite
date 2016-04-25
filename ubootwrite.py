@@ -31,7 +31,7 @@ def getprompt(ser, addr, verbose):
                 ser.write(LINE_FEED)
                 # Read the response
                 buf = ser.read(256);
-                if (buf.endswith(b"=> ") or buf.endswith(b"# ")):
+                if (buf.endswith(b"> ") or buf.endswith(b"# ")):
                         print("Prompt is '", buf[2:], "'", sep='', file = sys.stderr)
                         # The prompt returned starts with a line feed. This is the echo of the line feed we send to get the prompt.
                         # We keep this linefeed
@@ -134,10 +134,10 @@ def memwrite(ser, path, size, start_addr, verbose, debug):
                 print("Error while reading file '", fd.name, "' at offset ", bytes_read, sep='', file = sys.stderr)
         else:
                 print("\rProgress 100%                            ", file = sys.stderr)
-                print("File successfully written. You should run 'crc32", " {0:08x}".format(start_addr), " {0:08x}".format(bytes_read), "' on the modem and the result must be", " {0:08x}".format(crc32_checksum), ".", sep='', file = sys.stderr)
-                print("To copy from RAM to flash, unprotect flash: 'protect off all'...")
-                print("Then erase flash: 'erase", " {0:08x}".format((start_addr - 0x80000000) + 0xb0000000), " +{0:08x}".format(bytes_read), "'.", sep='', file = sys.stderr)
-                print("Then copy from RAM to flash: 'cp.b", " {0:08x}".format(start_addr), " {0:08x}".format((start_addr - 0x80000000) + 0xb0000000), " {0:08x}".format(bytes_read), "'.", sep='', file = sys.stderr)
+#not possible for zsun              print("File successfully written. You should run 'crc32", " {0:08x}".format(start_addr), " {0:08x}".format(bytes_read), "' on the modem and the result must be", " {0:08x}".format(crc32_checksum), ".", sep='', file = sys.stderr)
+#not needed for zsun                print("To copy from RAM to flash, unprotect flash: 'protect off all'...")
+                print("Then erase flash: 'erase 9f020000 " +{0:08x}".format(bytes_read), "'.", sep='', file = sys.stderr)
+                print("Then copy from RAM to flash: 'cp.b 80060000 9f020000 " {0:08x}".format(bytes_read), "'.", sep='', file = sys.stderr)
 
         fd.close()
         return
@@ -147,7 +147,7 @@ def main():
         optparser.add_option("--verbose", action = "store_true", dest = "verbose", help = "be verbose", default = False)
         optparser.add_option("--serial", dest = "serial", help = "specify serial port", default = "/dev/ttyUSB0", metavar = "dev")
         optparser.add_option("--write", dest = "write", help = "write mem from file", metavar = "path")
-        optparser.add_option("--addr", dest = "addr", help = "mem address", default = "0x80500000", metavar = "addr")
+        optparser.add_option("--addr", dest = "addr", help = "mem address", default = "0x80060000", metavar = "addr")
         optparser.add_option("--size", dest = "size", help = "# bytes to write", default = "0", metavar = "size")
         (options, args) = optparser.parse_args()
         if (len(args) != 0):
@@ -160,7 +160,7 @@ def main():
         
         if debug:
                 prompt = getprompt(ser, options.verbose)
-                writecommand(ser, "mw 80500000 01234567", prompt, options.verbose)
+                writecommand(ser, "mw 80600000 01234567", prompt, options.verbose)
                 buf = ser.read(256)
                 print("buf = '", buf, "'", sep = "")
                 return
