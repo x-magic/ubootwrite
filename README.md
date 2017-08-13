@@ -32,3 +32,9 @@ FAQ
 I found a bug or have a suggestion
 ========
 The best way to report a bug or suggest something is to post an issue on GitHub. Try to make it simple, but descriptive and add ALL the information needed to REPRODUCE the bug. **"Does not work" is not enough!** If you can not compile, please state your system, compiler version, etc! You can also contact me via email if you want to.
+
+_Why I fork this repo?_
+========
+I was using this script to upload image to my softbrick ZSUN WiFi card reader after a failed openwrt installation. I suggest if you are flashing your ZSUN WiFi card reader with openwrt firmware pack, unpack it and do it in telnet, instead of using the web interface. It's just too hard to guess if the firmware update is finished or not. 
+
+Also, those testpads on the PCB are TTTIIINNNYYY! Instead of soldering, I used a bunch of dupont wires and steel pins to make contact. Do notice that the firmware upload process to u-boot with this script is SLOOOOOOOOW, and we are talking about 5-10 hours to finish the upload. Even a teeny-tiny interference would render the entire upload useless. I tried around 5 times to get my board fixed and it took forever. So good luck for your adventure. 
